@@ -1,0 +1,62 @@
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.3/jquery.xdomainrequest.min.js'></script><span id='message'>Testing for root certificate...</span>
+<h3>CRL Revocations</h3>
+<table><h5>Non-EV Certificates</h5>
+<tr><td width=600>Non-EV certificate, 0 intermediates, none revoked <small>(<a href='https://test100-1499365095.test.sslresearch.org:11100/test.json'>test100</a>)</small></td><td><span id="test100-1499365095"></span></td></tr>
+
+</table><script>
+  Date.now = Date.now || function() { return +new Date; };
+  //list contains the list of domains that need to be tested
+var list = [["1", "2"]] 
+ var test_type = 'notBefore' 
+var test_run = Date.now(); //gives a configuration timestamp; unique id to indicate a single test run
+  var outcomes = ["pass"];
+  //var ports = [" ,"];
+  var done = 0;
+  var results = {};
+  
+  function upload() {
+    var json = JSON.stringify(results); 
+
+    $.ajax({
+      type: "POST",
+      url: "/",
+      data: json,
+      contentType: "application/json",
+      dataType: "json",
+      headers: {
+        'Access-Control-Allow-Credentials' : true,
+        'Access-Control-Allow-Origin':'*',
+        'Access-Control-Allow-Methods':'GET',
+        'Access-Control-Allow-Headers':'application/json',
+  }
+    });
+  }
+  function doNext(last) {
+    done++;
+    if (list.length > 0) {
+      $('#count').text(done);
+      var next = list.pop();
+      var start = Date.now();
+      var outcome = outcomes.pop();
+     $.ajax("https://time" + next + ".securepki.org", {
+         "timeout": 121000,
+         "success": function(data, status, xhr) { var end = Date.now(); $( "#" + next ).html((outcome == "pass" ? "<font color='green'>&#x2713;</font>" : "<font color='red'>&#x2717;</font>") + " " + status + "/" + data); results[next] = [test_run, (outcome == "pass" ? "PASS" : "FAIL"), end, test_type, next, navigator.userAgent]; },
+         "error": function(xhr, status, error) { var end = Date.now(); $( "#" + next ).html((outcome == "fail" ? "<font color='green'>&#x2713;</font>" : "<font color='red'>&#x2717;</font>") + " " + status + "/" + error); results[next] = [test_run, (outcome == "fail" ? "PASS" : "FAIL"), end, test_type, next, navigator.userAgent];},
+         "complete": function() { doNext(next); }
+      });
+    } else {
+        //upload to results/php once everything is done
+      console.log("Uploading results");
+      upload();
+    }
+  }
+
+//add a #message class to a page
+//add a #total class to a page --> will be filled with the length of the list containing the total number of tests
+//tests the root cert
+  $.ajax("https://time.securepki.org", { 
+    "timeout": 5000,
+    "success": function() { $("#message").html("Root certificate verified. Running tests...  (<span id='count'>0</span>/<span id='total'>Unknown</span> completed)"); $('#total').text(list.length); doNext(); },
+    "error": function() { $("#message").html("<font color='red'>Root certificate does not appeared to be installed.</font>  Download and install the root certificate at <a href='root.crt'>root.crt</a>.  Test <a href='https://test.sslresearch.org/test.json'>here</a>."); }
+  });
+</script>

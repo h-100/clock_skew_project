@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clock Skew Study 1</title>
+    
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+      <!-- Bootstrap core JavaScript -->
+      
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery/jquery-3.3.1.js') }}" ></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}" ></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    
+    
+    <link href="{{ url_for('static', filename='css/simple-sidebar.css') }}" rel="stylesheet">
+    
+    <script type=text/javascript>
+      </script>
+
+</head>
+
+<body>
+    Image
+    <img src="https://time0.securepki.org/static/images/time0.png"/>
+    <div id="wrapper">
+        
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Start Bootstrap
+                    </a>
+                </li>
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                                
+                <li>
+                    <a href="#">About</a>
+                </li>
+                
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <!--Image 1-->
+                Image 1
+            
+                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a> 
+                # include include.html file
+                {% include "include.html" %}
+                <div id="total"></div>
+                <div id="count"> </div>
+                <div id="message"> </div>
+                <div></div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}" ></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}" ></script>
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>
